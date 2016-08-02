@@ -1,5 +1,5 @@
 
-Server.default.boot;
+
 
 Server.killAll;
 
@@ -9,6 +9,7 @@ Server.default.options.device = "ProFire 610";
 
 Server.default.options.memSize = 8192 * 16;
 
+Server.default.boot;
 //:
 
 
@@ -57,4 +58,34 @@ Server.default.options.memSize = 8192 * 16;
 	mix.dup;
 
 } +> \test;
+//:
+{
+	var src, fx, chain;
+	src = In.ar (2);
+	chain = FFT(LocalBuf(2048), src);
+	chain = PV_BinScramble(chain, MouseX.kr , 0.1, MouseY.kr > 0.5 );
+	IFFT(chain).dup * 10
+} +> \test;
+
+//:
+{
+	var src, fx, chain;
+	src = In.ar (2);
+	chain = FFT(LocalBuf(2048), src);
+	chain = PV_BinScramble(chain, LFNoise1.kr (0.5).range (0.01, 10) , 0.1, 1);
+	fx = IFFT(chain) * 10;
+	DelayC.ar (fx, [0.5, 1], [1.5, 1.5]);
+} +> \test;
+
+//:
+{
+	var src, fx, chain;
+	src = In.ar (2);
+	chain = FFT(LocalBuf(2048), src);
+	chain = PV_BinScramble(chain, LFNoise1.kr (0.5).range (0.01, 10) , 0.1, 1);
+	fx = IFFT(chain) * 10;
+	DelayC.ar (fx, [0.5, 1], [1.5, 1.5]);
+} +> \test;
+
+//:
 //:
