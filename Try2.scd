@@ -92,8 +92,7 @@ Server.default.boot;
 {
 	var inA, chainA, inB, chainB, chain;
 	inA = In.ar (2);
-	inB = DelayC.ar (inA, 0.15, 0.1
-5);
+	inB = DelayC.ar (inA, 0.15, 0.15);
 	chainA = FFT(LocalBuf(2048), inA);
 	chainB = FFT(LocalBuf(2048), inB);
 	chain = PV_BinWipe(chainA, chainB, MouseX.kr(-1, 1));
@@ -112,3 +111,77 @@ Server.default.boot;
 	30 * IFFT(chain).dup;
 	// Out.ar(out, 0.1 * IFFT(chain).dup);
 } +> \test;
+
+//: Conformal map ?????
+{
+	var in, chain;
+	in = In.ar(2);
+	chain = FFT(LocalBuf(2048), in);
+	chain=PV_ConformalMap(chain, MouseX.kr(-1.0,1.0), MouseY.kr(-1.0,1.0));
+	IFFT (chain).dup;
+
+} +> \test;
+//: MagShift
+
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagShift(chain, MouseX.kr(0.25, 4, \exponential) );
+	IFFT (chain) * 10;
+} +> \test;
+
+//: MagShift
+
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagShift(chain, LFNoise1.kr (0.1).range (-10, 10) );
+	IFFT (chain) * 10;
+} +> \test;
+//: MagShift
+
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagShift(chain, LFNoise1.kr (0.5).range (-1, 10) );
+	IFFT (chain) * 10;
+} +> \test;
+//: MagShift
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagShift(chain, LFNoise1.kr (0.5).range (0.1, 10)
+		* LFNoise0.kr (5).range (0.7, 1.2) );
+	IFFT (chain) * 10;
+} +> \test;
+//: MagShift
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagShift(chain, LFNoise1.kr (0.5).range (0.01, 0.1)
+		* LFNoise0.kr (5).range (0.7, 1.2) );
+	IFFT (chain) * 100;
+} +> \test;
+//:
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf (2048), in);
+	chain = PV_MagSquared(chain);
+
+	IFFT (chain) * 10;
+} +> \test;
+//:
+{
+	var in, chain;
+	in = In.ar (2);
+	chain = FFT(LocalBuf (2048), in);
+	chain = PV_MagNoise(chain);
+	IFFT (chain) * 10;
+} +> \test;
+//:
