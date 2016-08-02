@@ -82,10 +82,33 @@ Server.default.boot;
 	var src, fx, chain;
 	src = In.ar (2);
 	chain = FFT(LocalBuf(2048), src);
-	chain = PV_BinScramble(chain, LFNoise1.kr (0.5).range (0.01, 10) , 0.1, 1);
-	fx = IFFT(chain) * 10;
-	DelayC.ar (fx, [0.5, 1], [1.5, 1.5]);
+	chain = PV_BinScramble(chain, LFNoise1.kr (9.15).range (0.001, 10) , 0.1, 1);
+	fx = IFFT(chain) * LFNoise1.kr (0.5).range (0, 20);
+	DelayC.ar (fx, [3, 3], [5, 5]);
 } +> \test;
+//:
+
+
+{
+	var inA, chainA, inB, chainB, chain;
+	inA = In.ar (2);
+	inB = DelayC.ar (inA, 0.15, 0.1
+5);
+	chainA = FFT(LocalBuf(2048), inA);
+	chainB = FFT(LocalBuf(2048), inB);
+	chain = PV_BinWipe(chainA, chainB, MouseX.kr(-1, 1));
+	10 * IFFT(chain).dup;
+	// Out.ar(out, 0.1 * IFFT(chain).dup);
+} +> \test;//:
 
 //:
-//:
+{
+	var inA, chainA, inB, chainB, chain;
+	inA = In.ar (2);
+	inB = DelayC.ar (inA, LFNoise1.kr (0.1).range (0.1, 4.9), 5);
+	chainA = FFT(LocalBuf(2048), inA);
+	chainB = FFT(LocalBuf(2048), inB);
+	chain = PV_BinWipe(chainA, chainB, LFNoise2.kr (12).range (-1, 1));
+	30 * IFFT(chain).dup;
+	// Out.ar(out, 0.1 * IFFT(chain).dup);
+} +> \test;
