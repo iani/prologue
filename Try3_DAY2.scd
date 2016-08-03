@@ -324,6 +324,26 @@
 	var in, chain, ifft;
 	in = In.ar (2);
 	chain = FFT(LocalBuf(2048), in);
+	chain = PV_BinShift(chain, {LFNoise0.kr (15).range (0.2, 0.4)} ! 10 );
+	ifft = IFFT (chain) * 10;
+	[
+		Mix (
+			ifft [0..4] collect: { | i |
+				DelayC.ar (i, LFNoise1.kr (0.1).range (0.1, 9.9), 10)
+			}
+		),
+		Mix (
+			ifft [0..4] collect: { | i |
+				DelayC.ar (i, LFNoise1.kr (0.1).range (0.1, 9.9), 10)
+			}
+		)
+	];
+} +> \test;
+//: BinShift!
+{
+	var in, chain, ifft;
+	in = In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
 	chain = PV_BinShift(chain, {LFNoise2.kr (5).range (0.1, 0.24)} ! 10 );
 	ifft = IFFT (chain) * 10;
 	[
