@@ -445,6 +445,27 @@ MIDIFunc.trace(false);
 		)
 	];
 } +> \test;
+//: MagSmear
+{ | inamp = 1 |
+	var in, chain, ifft;
+	in = inamp * In.ar (2);
+	chain = FFT(LocalBuf(2048), in);
+	chain = PV_MagSmear(chain, {LFNoise2.kr (0.1 rrand: 5).range (3, 15.24)} ! 20 );
+	chain = PV_BinShift(chain, {LFNoise0.kr (0.05).range (0.1, 2.4)} ! 10 );
+	ifft = IFFT (chain) * 10;
+	[
+		Mix (
+			ifft [0..4] collect: { | i |
+				DelayC.ar (i, LFNoise1.kr (1).range (0.1, 4.9), 5)
+			}
+		),
+		Mix (
+			ifft [0..4] collect: { | i |
+				DelayC.ar (i, LFNoise1.kr (1).range (0.1, 4.9), 5)
+			}
+		)
+	];
+} +> \test;
 //:
 
 
