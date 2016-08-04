@@ -39,3 +39,26 @@ MIDIdef.cc (\test, { | val |
 		)
 	];
 } +> \test;
+//: BinShift after delay
+// each delay has a different binshift.
+{ | inamp = 1 |
+	var in, chain, delays, shifts;
+	in = inamp * In.ar (2);
+	delays = DelayC.ar (in, {LFNoise1.kr (0.1).range (0.1, 9.9)} ! 10, 10);
+	shifts = delays collect: { | d |
+		chain = FFT(LocalBuf(2048), d);
+		chain = PV_BinShift(chain, LFNoise1.kr (0.1).range (0.2, 14) );
+		chain = PV_MagSmear(chain, LFNoise1.kr (2.1).range (0.02, 14) );
+		IFFT (chain);
+	};
+
+	[
+		Mix (
+			shifts [0..4] * 5
+		),
+		Mix (
+			shifts [5..9] * 5
+		)
+	];
+} +> \test;
+//:
