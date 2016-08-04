@@ -1,0 +1,9 @@
+* prologue
+SC synth and rehearsal code for Gérard Grisey's composition for viola and elecronics "Prologue"
+
+* Requirements
+
+tiny-inc library. 
+
+https://github.com/iani/tiny-inc
+
