@@ -11,7 +11,9 @@ Server.killAll;
 
 Server.default.options.device = "ProFire 610";
 
-Server.default.options.device;
+Server.default.options.inspect;
+
+// .device;
 
 Server.default.options.class.devices;
 
